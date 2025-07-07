@@ -1,0 +1,292 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Laporan Kalbut 3D</title>
+  <style>
+    :root {
+      --tosca: #007166;
+      --light: #f8f9fa;
+      --shadow: rgba(0,0,0,0.2);
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      padding: 15px;
+      background: linear-gradient(to bottom, #e6f7f6, #ffffff);
+    }
+    h2 {
+      text-align: center;
+      color: var(--tosca);
+      margin-bottom: 10px;
+      text-shadow: 1px 1px 2px #ccc;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 6px 16px var(--shadow);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 12px;
+      background: var(--tosca);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 16px;
+      box-shadow: 0 4px 8px var(--shadow);
+      transition: all 0.2s ease-in-out;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px var(--shadow);
+      cursor: pointer;
+    }
+    select, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      box-shadow: inset 0 2px 4px #e0e0e0;
+    }
+    .info-box {
+      background: #ffffff;
+      padding: 12px;
+      border-left: 5px solid var(--tosca);
+      border-radius: 8px;
+      box-shadow: 0 2px 6px var(--shadow);
+      margin: 10px 0;
+    }
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+    .popup-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 14px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      max-height: 80%;
+      overflow-y: auto;
+    }
+    .popup-content h3 {
+      margin-top: 0;
+      font-size: 18px;
+      color: var(--tosca);
+    }
+    .popup-content label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    .banner-container {
+      position: relative;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+    }
+    .banner-container img {
+      width: 100%;
+      display: block;
+    }
+    .banner-text {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background: linear-gradient(to right, rgba(0,113,102,0.8), rgba(0,113,102,0.6));
+      color: white;
+      font-weight: bold;
+      text-shadow: 1px 1px 2px black;
+      font-size: 14px;
+      padding: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>APLIKASI PANARUKAN ONLINE</h2>
+
+<div class="banner-container">
+  <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgzich3Hily9DIQvWrNSeLIGstR7Q6Tz9QxHRRrQLGV1OzLgkKry28RSVUhYVooYE1o1opgm1goBdnwWW4BdG-ENQ_sWqXlx9Yw98Eds1UVlVaLXm2K9cPlD3q3F8rKoL3OgbZYQYVo3aaE_3ia2eMswcYhpOy6HWrb2-DOCBdIxcV7LZYdYwn5DqlMrA/s400/1000071308.gif" alt="Kalbut Banner">
+  <div class="banner-text">
+    <marquee scrollamount="5">VERSI 4 - SEMANGAT BERTUGAS! | PASTIKAN AREA AMAN | LAPORAN WAJIB SETIAP SHIFT</marquee>
+  </div>
+</div>
+
+<div class="card">
+  <div class="info-box" id="infoPiket">Petugas Piket: <i>Belum dipilih</i></div>
+  <button onclick="openPopup('popupPiket')">Pilih Petugas Piket</button>
+
+  <div class="info-box" id="infoJaga">Petugas Jaga: <i>Belum dipilih</i></div>
+  <button onclick="openPopup('popupJaga')">Pilih Petugas Jaga</button>
+
+  <label>Kantor Pelabuhan</label>
+  <select id="kantor"><option value="aman">Aman</option><option value="tidak aman">Tidak Aman</option></select>
+
+  <label>Dermaga</label>
+  <select id="dermaga"><option value="aman">Aman</option><option value="tidak aman">Tidak Aman</option></select>
+
+  <label>Gudang Penyimpanan</label>
+  <select id="gudang"><option value="aman">Aman</option><option value="tidak aman">Tidak Aman</option></select>
+
+  <label>Area Parkir Kendaraan</label>
+  <select id="parkir"><option value="aman">Aman</option><option value="tidak aman">Tidak Aman</option></select>
+
+  <label>Kegiatan Pelabuhan</label>
+  <select id="kegiatan"><option value="nihil">Nihil</option><option value="ada">Ada</option></select>
+
+  <label>Keterangan Kegiatan</label>
+  <textarea id="keterangan" placeholder="Isi jika ada kegiatan..."></textarea>
+
+  <button onclick="kirimWhatsApp()">KIRIM LAPORAN</button>
+</div>
+
+<div id="popupPiket" class="popup">
+  <div class="popup-content">
+    <h3>Pilih Petugas Piket</h3>
+    <strong>PERWIRA JAGA</strong>
+    <label><input type="checkbox" value="Anthonius Iwan Handoko, S.Sos" class="piket"> Anthonius Iwan Handoko, S.Sos</label>
+    <label><input type="checkbox" value="Didik Ismail Saleh, S.H." class="piket"> Didik Ismail Saleh, S.H.</label>
+    <label><input type="checkbox" value="Zulhan Arifiyansyah, S.H." class="piket"> Zulhan Arifiyansyah, S.H.</label>
+    <label><input type="checkbox" value="Yandika Ferdiansyah, S.H." class="piket"> Yandika Ferdiansyah, S.H.</label>
+
+    <strong>ANGGOTA</strong>
+    <label><input type="checkbox" value="Dimas Choirul Hamid" class="piket"> Dimas Choirul Hamid</label>
+    <label><input type="checkbox" value="Digo Alvareza N" class="piket"> Digo Alvareza N</label>
+    <label><input type="checkbox" value="Joko Herwanto" class="piket"> Joko Herwanto</label>
+    <label><input type="checkbox" value="Anugrah Alam" class="piket"> Anugrah Alam</label>
+    <label><input type="checkbox" value="Junaidi" class="piket"> Junaidi</label>
+    <label><input type="checkbox" value="Adhitiyan Saputra" class="piket"> Adhitiyan Saputra</label>
+    <label><input type="checkbox" value="Bambang Tri" class="piket"> Bambang Tri</label>
+    <label><input type="checkbox" value="Ryan Faturachman" class="piket"> Ryan Faturachman</label>
+
+    <button class="close-btn" onclick="closePopup('popupPiket', 'piket', 'infoPiket')">Simpan</button>
+  </div>
+</div>
+
+<div id="popupJaga" class="popup">
+  <div class="popup-content">
+    <h3>Pilih Petugas Jaga</h3>
+    <label><input type="checkbox" value="SUGIK ARIFANDI" class="jaga"> SUGIK ARIFANDI</label>
+    <label><input type="checkbox" value="VIKY ANUGRAH HIDAYAT" class="jaga"> VIKY ANUGRAH HIDAYAT</label>
+    <label><input type="checkbox" value="ANDREAS S" class="jaga"> ANDREAS S</label>
+    <label><input type="checkbox" value="PUGUH HENDRO U" class="jaga"> PUGUH HENDRO U</label>
+    <label><input type="checkbox" value="DAPRIL NURUL R" class="jaga"> DAPRIL NURUL R</label>
+    <button class="close-btn" onclick="closePopup('popupJaga', 'jaga', 'infoJaga')">Simpan</button>
+  </div>
+</div>
+
+<script>
+function openPopup(id) {
+  document.getElementById(id).style.display = "flex";
+}
+function closePopup(id, kelas, infoId) {
+  document.getElementById(id).style.display = "none";
+  const checked = Array.from(document.querySelectorAll(`input.${kelas}:checked`))
+    .map(el => el.value);
+  document.getElementById(infoId).innerHTML = `${kelas === 'piket' ? 'Petugas Piket' : 'Petugas Jaga'}: <b>${checked.join(', ') || 'Belum dipilih'}</b>`;
+}
+function getSelected(kelas) {
+  return Array.from(document.querySelectorAll(`input.${kelas}:checked`))
+    .map(el => el.value).join(', ');
+}
+function getShift(jam) {
+  const hour = parseInt(jam.split(":")[0]);
+  return (hour >= 8 && hour < 20) ? "Pagi" : "Malam";
+}
+
+function getCuaca(callback) {
+  const fallbackLat = -7.724;
+  const fallbackLon = 114.007;
+  function fetchData(lat, lon) {
+    const urlCuaca = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code,wind_speed_10m&timezone=auto`;
+    const urlOmbak = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&current=wave_height&timezone=auto`;
+
+    Promise.all([fetch(urlCuaca).then(r => r.json()), fetch(urlOmbak).then(r => r.json())])
+      .then(([cuacaData, ombakData]) => {
+        const suhu = cuacaData.current?.temperature_2m + "°C" || "tidak tersedia";
+        const angin = cuacaData.current?.wind_speed_10m + " km/jam" || "tidak tersedia";
+        const kodeCuaca = cuacaData.current?.weather_code;
+        const wave = ombakData.current?.wave_height;
+        const ombak = (wave !== undefined) ? `${wave} m` : "tidak tersedia";
+
+        const kondisi = {
+          0: "Cerah", 1: "Sebagian Cerah", 2: "Berawan", 3: "Mendung",
+          45: "Berkabut", 48: "Kabut Es", 51: "Gerimis Ringan", 53: "Gerimis Sedang",
+          55: "Gerimis Lebat", 61: "Hujan Ringan", 63: "Hujan Sedang", 65: "Hujan Lebat"
+        };
+        const cuacaDeskripsi = kondisi[kodeCuaca] || "Tidak diketahui";
+        callback(`${cuacaDeskripsi} (${suhu})`, angin, ombak);
+      }).catch(() => callback("Tidak tersedia", "-", "-"));
+  }
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      pos => fetchData(pos.coords.latitude, pos.coords.longitude),
+      () => fetchData(fallbackLat, fallbackLon)
+    );
+  } else {
+    fetchData(fallbackLat, fallbackLon);
+  }
+}
+
+function kirimWhatsApp() {
+  const now = new Date();
+  const tgl = now.toLocaleDateString('id-ID');
+  const jamRaw = now.toTimeString().split(" ")[0].substring(0,5);
+  const jam = `${jamRaw} WIB`;
+  const shift = getShift(jamRaw);
+  const piket = getSelected('piket');
+  const jaga = getSelected('jaga');
+  const kantor = document.getElementById("kantor").value;
+  const dermaga = document.getElementById("dermaga").value;
+  const gudang = document.getElementById("gudang").value;
+  const parkir = document.getElementById("parkir").value;
+  const kegiatan = document.getElementById("kegiatan").value;
+  const keterangan = document.getElementById("keterangan").value.trim() || "nihil";
+
+  getCuaca((cuaca, angin, ombak) => {
+    const isi =
+`*LAPORAN PENGAWASAN AREA PELABUHAN KALBUT* 
+*Hari/Tanggal*: ${tgl}
+*Jam*: ${jam}
+*Shift*: ${shift}
+*Petugas Piket*: ${piket}
+*Petugas Jaga*: ${jaga}
+*Cuaca*: ${cuaca}
+*Angin*: ${angin}
+*Ketinggian Ombak*: ${ombak}
+
+*PENGAWASAN AREA*:
+- Kantor Pelabuhan: ${kantor}
+- Dermaga: ${dermaga}
+- Gudang Penyimpanan: ${gudang}
+- Area Parkir Kendaraan: ${parkir}
+- Kegiatan Pelabuhan: ${kegiatan}
+*Keterangan Kegiatan*: ${kegiatan === "ada" ? keterangan : "nihil"}
+
+_Pesan otomatis by Panarukan.Online_`;
+
+    const waURL = `https://wa.me/?text=${encodeURIComponent(isi)}`;
+    window.open(waURL, "_blank");
+  });
+}
+</script>
+
+</body>
+</html>
